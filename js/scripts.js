@@ -1,5 +1,5 @@
 //BUSINESS LOGIC
-var Code = function(sentence){
+var CodeNoSpace = function(sentence){
   var noPunctuation=[];
   var punctuations = /[abcdefghijklmnopqrstuvwxyz0123456789]+/;
   sentence = sentence.toLowerCase();
@@ -16,26 +16,45 @@ var Code = function(sentence){
         encryptedSentence = encryptedSentence + noPunctuation[i+n];
     }
   }
+  return encryptedSentence;
+}
+function CodeWithSpace(sentence) {
   var codex=[];
-  var chunkCount = Math.ceil(encryptedSentence.length/5);
+  var chunkCount = Math.ceil(sentence.length/5);
   for(var t=1; t <= chunkCount; t++){
     if (t < chunkCount) {
-      codex.push(encryptedSentence.slice((t*5 - 5), t*5));
+      codex.push(sentence.slice((t*5 - 5), t*5));
     }
     else {
-      codex.push(encryptedSentence.slice(t*5 - 5));
+      codex.push(sentence.slice(t*5 - 5));
     }
   }
-  encryptedSentence = codex.join(" ");
-  return encryptedSentence;
+  sentence = codex.join(" ");
+  return sentence;
 }
 
 //UI LOGIC
 $(document).ready(function(){
   $("form").submit(function(event){
     var userInput = $("input#message").val();
-    var result = Code(userInput);
-    $("#output").text(result);
+    var resultNoSpace = CodeNoSpace(userInput);
+    var resultWithSpace = CodeWithSpace(resultNoSpace);
+    $("#output").text(resultWithSpace);
+    var columnCount = parseInt(Math.sqrt(resultNoSpace.length));
+    var rowCount = Math.ceil(resultNoSpace.length/columnCount);
+    for (var i = 0; i < rowCount; i++) {
+      $("table").append("<tr id='" + i + "'></tr>");
+    }
+    for (var i = 0; i < columnCount; i++) {
+      $("tr").append("<td></td>");
+    }
+    var counter = -1;
+    for (var i = 0; i < rowCount; i++) {
+      for (var k = 1; k <= columnCount; k++) {
+        counter++;
+        $("tr#" + i + " :nth-child(" + k + ")").append(resultNoSpace[counter]);
+      }
+    }
     event.preventDefault();
   });
 });
