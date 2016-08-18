@@ -4,10 +4,11 @@
 
 table tr{
   border-style: solid;
-  border-width: 5px;
+  border-width: thin;
 }
 
 table td{
+  text-align: center;
   border-style: solid;
-  border-width: 5px;
+  border-width: thin;
 }
