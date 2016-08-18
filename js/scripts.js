@@ -1,5 +1,5 @@
 //BUSINESS LOGIC
-var CodeNoSpace = function(sentence){
+var gridSystem = function(sentence){
   var noPunctuation=[];
   var punctuations = /[abcdefghijklmnopqrstuvwxyz0123456789]+/;
   sentence = sentence.toLowerCase();
@@ -8,6 +8,9 @@ var CodeNoSpace = function(sentence){
       noPunctuation.push(sentence[i]);
     }
   }
+  return noPunctuation;
+}
+function CodeNoSpace(noPunctuation){
   var columnCount = parseInt(Math.sqrt(noPunctuation.length));
   var encryptedSentence = "";
   for (var n=0; n<columnCount; n++){
@@ -37,7 +40,8 @@ function CodeWithSpace(sentence) {
 $(document).ready(function(){
   $("form").submit(function(event){
     var userInput = $("input#message").val();
-    var resultNoSpace = CodeNoSpace(userInput);
+    var gridSentence = gridSystem(userInput);
+    var resultNoSpace = CodeNoSpace(gridSentence);
     var resultWithSpace = CodeWithSpace(resultNoSpace);
     $("#output").text(resultWithSpace);
     var columnCount = parseInt(Math.sqrt(resultNoSpace.length));
@@ -52,7 +56,7 @@ $(document).ready(function(){
     for (var i = 0; i < rowCount; i++) {
       for (var k = 1; k <= columnCount; k++) {
         counter++;
-        $("tr#" + i + " :nth-child(" + k + ")").append(resultNoSpace[counter]);
+        $("tr#" + i + " :nth-child(" + k + ")").append(gridSentence[counter]);
       }
     }
     event.preventDefault();
